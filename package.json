@@ -58,7 +58,6 @@
 		"@lu/validator": "git+https://muscat:jQzjmEv5k1vsaniDkhK8@lookingup.co.jp/gitlab/Yuki/validator.git",
 		"commander": "^6.2.1",
 		"glob": "^7.1.6",
-		"moment": "^2.29.1",
 		"mongodb": "^3.6.4"
 	},
 	"bin": {
