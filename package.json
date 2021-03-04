@@ -29,7 +29,7 @@
 		"test": "jest",
 		"prepublishOnly": "npm run build"
 	},
-	"author": "yuki-ishitsuka@lookingup.co.jp",
+	"author": "Yuki Ishitsuka",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/dotenv": "^8.2.0",
