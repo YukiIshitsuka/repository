@@ -9,8 +9,8 @@ export const cliWrap = async (func: (mongo: MongoDB) => Promise<void>): Promise<
 	try {
 		await func(mongo);
 	} catch (error) {
-		ColorConsole.error("cli error!!");
 		console.error(error.errors);
+		ColorConsole.error("cli error!!");
 	} finally {
 		await mongo.close();
 	}

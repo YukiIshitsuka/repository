@@ -58,8 +58,8 @@ var cliWrap = function (func) { return __awaiter(void 0, void 0, void 0, functio
                 return [3 /*break*/, 7];
             case 4:
                 error_1 = _a.sent();
-                color_1.ColorConsole.error("cli error!!");
                 console.error(error_1.errors);
+                color_1.ColorConsole.error("cli error!!");
                 return [3 /*break*/, 7];
             case 5: return [4 /*yield*/, mongo.close()];
             case 6:
