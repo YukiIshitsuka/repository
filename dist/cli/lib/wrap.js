@@ -40,7 +40,6 @@ exports.cliWrap = void 0;
 var __1 = require("../..");
 var color_1 = require("./color");
 var dotenv_1 = require("dotenv");
-var validator_1 = require("@lu/validator");
 var cliWrap = function (func) { return __awaiter(void 0, void 0, void 0, function () {
     var mongo, error_1;
     return __generator(this, function (_a) {
@@ -60,9 +59,7 @@ var cliWrap = function (func) { return __awaiter(void 0, void 0, void 0, functio
             case 4:
                 error_1 = _a.sent();
                 color_1.ColorConsole.error("cli error!!");
-                if (error_1 instanceof validator_1.ValidationError) {
-                    console.error(JSON.stringify(error_1.errors, undefined, 2));
-                }
+                console.error(error_1.errors);
                 return [3 /*break*/, 7];
             case 5: return [4 /*yield*/, mongo.close()];
             case 6:
