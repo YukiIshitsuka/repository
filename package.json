@@ -55,7 +55,7 @@
 		"typescript": "^4.2.2"
 	},
 	"dependencies": {
-		"@lu/validator": "git+https://muscat:jQzjmEv5k1vsaniDkhK8@lookingup.co.jp/gitlab/Yuki/validator.git",
+		"@lu/validator": "git+https://github.com/YukiIshitsuka/validator.git",
 		"commander": "^6.2.1",
 		"glob": "^7.1.6",
 		"mongodb": "^3.6.4"
