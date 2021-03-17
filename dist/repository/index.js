@@ -653,6 +653,9 @@ var BaseRepository = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        if (!Array.isArray(docs)) {
+                            throw new error_1.RepositoryInvalidError("不正なリクエストです。");
+                        }
                         insertDocs = [];
                         doUniqueCheck = this.uniques.length > 0;
                         _b.label = 1;

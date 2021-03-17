@@ -383,6 +383,9 @@ class BaseRepository<RepositorySchema extends DefaultSchema> {
 	public async insertMany(
 		docs: any[] | WithoutAutoGenerateColumn<RepositorySchema>[]
 	): Promise<InsertWriteOpResult<RepositorySchema>> {
+		if (!Array.isArray(docs)) {
+			throw new RepositoryInvalidError("不正なリクエストです。");
+		}
 		const insertDocs: WithoutDefaultColumn<RepositorySchema>[] = [];
 		const doUniqueCheck = this.uniques.length > 0;
 		for (const doc of docs) {
