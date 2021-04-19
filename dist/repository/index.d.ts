@@ -232,6 +232,13 @@ declare class BaseRepository<RepositorySchema extends DefaultSchema> {
      */
     static update<TSchema extends DefaultSchema = any>(id: Key, doc: Partial<WithoutAutoGenerateColumn<TSchema>>): Promise<Key>;
     /**
+     * 更新。更新したIDを返す。
+     * @param {Key} id 更新対象のID
+     * @param {any} doc
+     * @returns {Promise<TSchema>}
+     */
+    static updateAll<TSchema extends DefaultSchema = any>(id: Key, doc: WithoutAutoGenerateColumn<TSchema>): Promise<Key>;
+    /**
      * 対象のIDのデータを削除する
      * @param {Key} id 削除対象のID
      * @returns {Promise<number>}

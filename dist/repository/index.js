@@ -1196,6 +1196,77 @@ var BaseRepository = /** @class */ (function () {
         });
     };
     /**
+     * 更新。更新したIDを返す。
+     * @param {Key} id 更新対象のID
+     * @param {any} doc
+     * @returns {Promise<TSchema>}
+     */
+    BaseRepository.updateAll = function (id, doc) {
+        return __awaiter(this, void 0, void 0, function () {
+            var repo, tmp, targetId, target, _a, _b, uniques, result, label, e_8_1;
+            var e_8, _c, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        repo = new this();
+                        return [4 /*yield*/, repo.parse(doc)];
+                    case 1:
+                        tmp = _e.sent();
+                        targetId = repo.parseId(id);
+                        return [4 /*yield*/, repo.findOne({ _id: targetId })];
+                    case 2:
+                        target = _e.sent();
+                        if (!target)
+                            throw new error_1.RepositoryInvalidError("\u66F4\u65B0\u5BFE\u8C61\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3002 (\u5BFE\u8C61\u306EID:" + id + ")");
+                        if (!repo.uniques.length) return [3 /*break*/, 10];
+                        _e.label = 3;
+                    case 3:
+                        _e.trys.push([3, 8, 9, 10]);
+                        _a = __values(repo.uniques), _b = _a.next();
+                        _e.label = 4;
+                    case 4:
+                        if (!!_b.done) return [3 /*break*/, 7];
+                        uniques = _b.value;
+                        if (uniques.length === 0)
+                            return [3 /*break*/, 6];
+                        if (uniques.every(function (unique) { return !tmp[unique] || tmp[unique] === target[unique]; }))
+                            return [3 /*break*/, 6];
+                        return [4 /*yield*/, repo.findToArray({
+                                $and: __spreadArray(__spreadArray([], __read(uniques.map(function (unique) {
+                                    var _a;
+                                    return (_a = {}, _a[unique] = tmp[unique], _a);
+                                }))), [{ _id: { $ne: targetId } }]),
+                            })];
+                    case 5:
+                        result = _e.sent();
+                        if (result.length) {
+                            label = repo.getRules()[uniques[0]].label;
+                            throw new validator_1.ValidationError((_d = {}, _d[uniques[0]] = label + "\uFF1A" + tmp[uniques[0]] + "\u306F\u3059\u3067\u306B\u767B\u9332\u3055\u308C\u3066\u3044\u307E\u3059\u3002", _d));
+                        }
+                        _e.label = 6;
+                    case 6:
+                        _b = _a.next();
+                        return [3 /*break*/, 4];
+                    case 7: return [3 /*break*/, 10];
+                    case 8:
+                        e_8_1 = _e.sent();
+                        e_8 = { error: e_8_1 };
+                        return [3 /*break*/, 10];
+                    case 9:
+                        try {
+                            if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+                        }
+                        finally { if (e_8) throw e_8.error; }
+                        return [7 /*endfinally*/];
+                    case 10: return [4 /*yield*/, repo.update({ _id: targetId }, { $set: tmp })];
+                    case 11:
+                        _e.sent();
+                        return [2 /*return*/, targetId];
+                }
+            });
+        });
+    };
+    /**
      * 対象のIDのデータを削除する
      * @param {Key} id 削除対象のID
      * @returns {Promise<number>}

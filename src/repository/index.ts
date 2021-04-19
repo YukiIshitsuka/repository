@@ -532,6 +532,7 @@ class BaseRepository<RepositorySchema extends DefaultSchema> {
 			});
 		});
 	}
+
 	/**
 	 * コレクションを作成する。
 	 * @returns {Promise<void>}
@@ -640,6 +641,38 @@ class BaseRepository<RepositorySchema extends DefaultSchema> {
 		const repo = new this();
 		const tmp = await repo.parseOptional(doc);
 		if (Object.keys(tmp).length === 0) throw new RepositoryInvalidError("update data is required!!");
+		const targetId = repo.parseId(id);
+		const target = await repo.findOne({ _id: targetId });
+		if (!target) throw new RepositoryInvalidError(`更新対象が見つかりません。 (対象のID:${id})`);
+		// ユニーク制約がある場合はユニークチェック。
+		if (repo.uniques.length) {
+			for (const uniques of repo.uniques) {
+				if (uniques.length === 0) continue;
+				if (uniques.every((unique) => !tmp[unique] || tmp[unique] === target[unique])) continue;
+				const result = await repo.findToArray({
+					$and: [...uniques.map((unique) => ({ [unique]: tmp[unique] })), { _id: { $ne: targetId } }],
+				});
+				if (result.length) {
+					const { label } = repo.getRules()[uniques[0]];
+					throw new ValidationError({ [uniques[0]]: `${label}：${tmp[uniques[0]]}はすでに登録されています。` });
+				}
+			}
+		}
+		await repo.update({ _id: targetId }, { $set: tmp });
+		return targetId;
+	}
+	/**
+	 * 更新。更新したIDを返す。
+	 * @param {Key} id 更新対象のID
+	 * @param {any} doc
+	 * @returns {Promise<TSchema>}
+	 */
+	public static async updateAll<TSchema extends DefaultSchema = any>(
+		id: Key,
+		doc: WithoutAutoGenerateColumn<TSchema>
+	): Promise<Key> {
+		const repo = new this();
+		const tmp = await repo.parse(doc);
 		const targetId = repo.parseId(id);
 		const target = await repo.findOne({ _id: targetId });
 		if (!target) throw new RepositoryInvalidError(`更新対象が見つかりません。 (対象のID:${id})`);
